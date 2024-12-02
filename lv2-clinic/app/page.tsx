@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/reusable/button"
 import Image from "next/image";
 import appointmentIcon from '../public/assets/icons/logo-full.svg'
 import PatientForm from "@/components/forms/patientForm"
@@ -23,7 +23,7 @@ export default function Home() {
           <p className="justify-items-end text-dark-600 xl:text-left">
             ©2024 Kidanga Level 4 Hospital
           </p>
-          <Link href='/?admin=true' className="text-">Admin</Link>
+          <Link href='/?admin=true' className="text-green-500">Admin</Link>
         </div>
       </section>
       <Image
