@@ -12,6 +12,10 @@ import {
 import CustomFormField from "../reusable/formField";
 import userIcon from '../../public/assets/icons/user.svg';
 import emailIcon from '../../public/assets/icons/email.svg';
+import SubmitButton from "../ui/submitButton";
+import { useState } from "react";
+import { userFormValidation } from "@/lib/validation";
+import { useRouter } from "next/navigation";
 
 export enum FormFieldType {
   INPUT = 'input',
@@ -22,25 +26,33 @@ export enum FormFieldType {
   SELECT = 'select',
   SKELETON = 'skeleton'
 } 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  })
-})
-const PatientForm = () => {
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+const PatientForm = () => {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const form = useForm<z.infer<typeof userFormValidation>>({
+    resolver: zodResolver(userFormValidation),
     defaultValues: {
-      username: "",
+      name: "",
+      email: "",
+      phone: "",
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit({name, email, phone}: z.infer<typeof userFormValidation>) {
+  setIsLoading(true)
+  try {
+    // const userData = {name, email, phone  }
+    // const user = await createUser(userData)
+    // if(user) router.push( `/patients/${user.$id}/register`)
+  } catch (error) {
+    console.log(error)
+    
+  }
+
+   
   }
   return (
     <Form {...form}>
@@ -67,7 +79,16 @@ const PatientForm = () => {
         iconSrc = {emailIcon}
         iconAlt = 'email icon'
         />
-        <Button type="submit">Submit</Button>
+        <CustomFormField 
+        fieldType = {FormFieldType.PHONE_INPUT}
+        control = {form.control}
+        name = 'phone'
+        label = 'Phone Number'
+        placeholder = '(254)-456-6784'
+       
+        />
+        {/* <Button type="submit">Submit</Button> */}
+        <SubmitButton isloading={isLoading}>Get Started</SubmitButton>
       </form>
     </Form>
   );
